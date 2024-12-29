@@ -1,4 +1,5 @@
 import pandas as pd
+
 df = pd.read_csv("hotel.csv")
 df_cards = pd.read_csv("cards.csv", dtype=str).to_dict(orient="records")
 df_security_cards = pd.read_csv("card-security.csv", dtype=str)
@@ -31,8 +32,41 @@ class ReservationTicket:
     def generate(self):
         content = f"""
         Thank you for your Reservation!
+        Here are your booking data:
         Your Name = {self.customer_name}
         Hotel Name = {self.hotel_name.name}
+        """
+        return content
+
+
+"""
+    def spa_generate(self):
+        spa_content = f""
+        Thank you for your SPA Reservation!
+        Here are your SPA booking data:
+        Your Name = {self.customer_name}
+        Hotel Name = {self.hotel_name.name}
+        ""
+        return spa_content
+"""
+
+
+class SpaHotel(Hotel):
+    def book_spa_package(self):
+        pass
+
+
+class SpaTicket:
+    def __init__(self, customer_name, hotel_object):
+        self.customer_name = customer_name
+        self.hotel = hotel_object
+
+    def generate(self):
+        content = f"""
+        Thank you for your SPA reservation!
+        Here are you SPA booking data:
+        Name: {self.customer_name}
+        Hotel name: {self.hotel.name}
         """
         return content
 
@@ -61,7 +95,7 @@ class SecurityCreditCard(CreditCard):
 
 print(df)
 Id = int(input("Enter the id of Hotel: "))
-hotel = Hotel(Id)
+hotel = SpaHotel(Id)
 
 if hotel.available():
     credit_number = input("Enter Credit card number(1234): ")
@@ -75,11 +109,20 @@ if hotel.available():
             name = input("Enter your name: ")
             reservation_ticket = ReservationTicket(customer_name=name, hotel_object=hotel)
             print(reservation_ticket.generate())
+            spa_que = input("Do you want to book a spa package?(yes/no)\n").lower()
+
+            if spa_que == "yes":
+                hotel.book_spa_package()
+                spa_ticket = SpaTicket(customer_name=name, hotel_object=hotel)
+                print(spa_ticket.generate())
+            else:
+                print(reservation_ticket.generate())
+                
         else:
-             print("Wrong Password!!")
+            print("Wrong Password!!")
 
     else:
-         print("Credit card not vaild")
+        print("Credit card not vaild")
 
 else:
     print("Hotel is not free")
