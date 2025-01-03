@@ -1,4 +1,5 @@
 import pandas
+from abc import ABC, abstractmethod
 
 df = pandas.read_csv("hotel.csv", dtype={"id": str})
 
@@ -35,7 +36,13 @@ class Hotel:
             return False
 
 
-class ReservationTicket:
+class Ticket(ABC):
+    @abstractmethod
+    def generate(self):
+        pass
+
+
+class ReservationTicket(Ticket):
     def __init__(self, customer_name, hotel_object):
         self.customer_name = customer_name
         self.hotel = hotel_object
@@ -59,6 +66,14 @@ class ReservationTicket:
     def covert(amount):
         amount = amount * 1.2
         return amount
+
+
+class DigitalTicket(Ticket):
+    def generate(self):
+        pass
+
+    def download(self):
+        pass
 
 
 hotel1 = Hotel(hotel_id="188")
