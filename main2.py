@@ -38,10 +38,21 @@ class ReservationTicket:
         content = f"""
         Thank you for your reservation!
         Here are you booking data:
-        Name: {self.customer_name}
+        Name: {self.the_customer_name}
         Hotel name: {self.hotel.name}
         """
         return content
+
+    @property
+    def the_customer_name(self):
+        name = self.customer_name.strip()
+        name = name.title()
+        return name
+
+    @staticmethod
+    def covert(amount):
+        amount = amount * 1.2
+        return amount
 
 
 hotel1 = Hotel(hotel_id="188")
@@ -58,3 +69,10 @@ print(Hotel.watermark)
 """print(Hotel.name)"""
 print(Hotel.get_hotel_count(data=df))
 print(hotel1.get_hotel_count(data=df))
+
+ticket = ReservationTicket(customer_name="aryan kanada ", hotel_object=hotel1)
+print(ticket.the_customer_name)
+print(ticket.generate())
+
+coverted = ReservationTicket.covert(amount = 10)
+print(coverted)
